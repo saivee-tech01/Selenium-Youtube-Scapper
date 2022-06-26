@@ -1,15 +1,10 @@
-import requests
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 YOUTUBE_TRENDING_URL="https://www.youtube.com/feed/trending"
-response=requests.get(YOUTUBE_TRENDING_URL)
-print('STATUS CODE',response.status_code)
-#print('OUTPUT',response.text[:500])
-with open('trending.html','w') as f:
-  f.write(response.text)
-
-doc=BeautifulSoup(response.text,'html.parser')
-print('PageTitle',doc.title.text)
-
-#Find all video divs
-video_div=doc.find_all('div',class_='ytd-video-renderer')
-print(f'Found {len(video_div)} videos')
+chrome_options=Options()
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--headless')
+driver=webdriver.Chrome(options=chrome_options)
+driver.get(YOUTUBE_TRENDING_URL)
+print(driver.title)
